@@ -14,7 +14,10 @@ class QuestionsController extends Controller
      */
     public function index()
     {
-        //
+        //With isliye daala kyuki agar view side pe kar rahe the $question->owner to wo har time query maa raha tha
+        //isiliye humne with relation maar diya to ek baar me sab leke aayega wo. Debug bar daala tha isko dekhne ke liye.
+        $questions = Question::with('owner')->latest()->paginate(10);
+        return view('questions.index',compact('questions'));
     }
 
     /**

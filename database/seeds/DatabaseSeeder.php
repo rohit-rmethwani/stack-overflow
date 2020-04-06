@@ -16,8 +16,12 @@ class DatabaseSeeder extends Seeder
             ->create()
             ->each(function($user){
                for($i=1; $i<rand(5,10); $i++){
-                   $user->questions()->create(factory(Question::class)->make()->toArray());
+                   $user->questions()->create(factory(App\Question::class)->make()->toArray());
                }
             });
     }
 }
+/*
+ * Laravel ke paas 2 tarah ke create() hai.
+ * Ek jo object hai class ka uspe kaam karega aur ek jo object lega details wala.
+ * */
