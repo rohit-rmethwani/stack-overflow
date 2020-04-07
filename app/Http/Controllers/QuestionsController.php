@@ -2,11 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\QuestionRequest;
+use App\Http\Requests\UpdateRequest;
 use App\Question;
 use Illuminate\Http\Request;
 
 class QuestionsController extends Controller
 {
+    public function __construct()
+    {
+        //Authentication ka middleware likha hua hai jo validation ke kaam aayega. Request wali file se true directly return kar sakte if yaha ye likha hai to
+        $this->middleware('auth')->only(['create', 'store']);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -27,7 +35,7 @@ class QuestionsController extends Controller
      */
     public function create()
     {
-        //
+        return view('questions.create');
     }
 
     /**
@@ -36,9 +44,17 @@ class QuestionsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(QuestionRequest $request)
     {
-        //
+        //create
+        auth()->user()->questions()->create([
+            'title' => $request->title,
+            'body' => $request->body
+        ]);
+
+        //session flash
+        session()->flash('success', 'Question has been created Successfully!');
+        return redirect(route('questions.index'));
     }
 
     /**
@@ -49,7 +65,8 @@ class QuestionsController extends Controller
      */
     public function show(Question $question)
     {
-        //
+        $question->increment('views_count');
+        return view('questions.show', compact('question'));
     }
 
     /**
@@ -60,7 +77,10 @@ class QuestionsController extends Controller
      */
     public function edit(Question $question)
     {
-        //
+        if($this->authorize('update', $question)){
+            return view('questions.edit',compact("question"));
+        }
+        abort(403, 'Access Denied');
     }
 
     /**
@@ -70,9 +90,18 @@ class QuestionsController extends Controller
      * @param  \App\Question  $question
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Question $question)
+    public function update(UpdateRequest $request, Question $question)
     {
-        //
+        if($this->authorize('update', $question)){
+            $question->update([
+                'title' => $request->title,
+                'body' => $request->body
+            ]);
+            session()->flash('success', 'Updated question successfully!');
+            return redirect(route('questions.index'));
+        }
+        abort(403, 'Access Denied');
+
     }
 
     /**
@@ -83,6 +112,11 @@ class QuestionsController extends Controller
      */
     public function destroy(Question $question)
     {
-        //
+        if($this->authorize('delete', $question)){
+            $question->delete();
+            session()->flash('success', 'Deleted question successfully!');
+            return redirect(route('questions.index'));
+        }
+        abort(403, 'Access Denied');
     }
 }

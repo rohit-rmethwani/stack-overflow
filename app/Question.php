@@ -25,7 +25,7 @@ class Question extends BaseModel
 
     //Inko ACCESSORS bolte hai. Ye koi property ko get karne me kaam aate hai taaki ui side pe computation ka need naa pade aur hum directly display kar paye. Ye b laravel ke setAttribute ki tarah php ke __get se banaya hai.
     public function getUrlAttribute(){
-        return "questions/{$this->id}";
+        return "questions/{$this->slug}";
     }
 
     //diffForHumans() 7hrs ago aise format me dega jabki $question->createdAt maara rehta to wo raw datetime deta.
