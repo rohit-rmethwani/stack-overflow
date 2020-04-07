@@ -44,4 +44,8 @@ class Question extends BaseModel
         return "unanswered";
     }
 
+    public function answers(){
+        return $this->hasMany(Answer::class);
+    }
+
 }
