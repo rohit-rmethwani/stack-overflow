@@ -31,9 +31,11 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        //yaha pe answers.author maara manje answers ka author b matlab answers relationship se layega. Questions ka chahie to agar [] aayega.
         Route::bind('slug', function($slug){
-           return Question::where('slug', $slug)->firstOrFail();
+           return Question::with('answers.author')
+               ->where('slug', $slug)
+               ->firstOrFail();
         });
         parent::boot();
     }
