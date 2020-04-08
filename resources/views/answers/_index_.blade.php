@@ -14,7 +14,7 @@
                                 <i class="fa fa-caret-up fa-3x "></i>
                             </a>
                             <h4 class="m-0 text-center text-dark">
-                                {{ $question->votes_count }}
+                                {{ $answer->votes_count }}
                             </h4>
                             <a href="" title="Down Vote" class="d-block text-dark text-center">
                                 <i class="fa fa-caret-down fa-3x "></i>
@@ -23,7 +23,7 @@
                                 <i class="fa fa-check fa-2x "></i>
                             </a>
                         </div>
-                        <div class="ml-5">
+                        <div class="ml-5 flex-fill">
                             {!! $answer->body !!}
 
                             <div class="d-flex justify-content-between mt-2">
