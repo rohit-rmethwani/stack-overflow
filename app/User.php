@@ -52,4 +52,40 @@ class User extends Authenticatable
     public function getAvatarAttribute(){
         return "https://ui-avatars.com/api/?name={$this->name}&rounded=true&size=40&color=ffcc33";
     }
+
+    public function votesQuestion()
+    {
+        return $this->morphedByMany(Question::class, 'vote')->withTimestamps();
+    }
+
+    public function votesAnswer()
+    {
+        return $this->morphedByMany(Answer::class, 'vote')->withTimestamps();
+    }
+
+    public function hasQuestionUpVote(Question $question)
+    {
+        return $this->votesQuestion()->where(['vote' => 1, 'vote_id' => $question->id])->exists();
+    }
+    public function hasQuestionDownVote(Question $question)
+    {
+        return $this->votesQuestion()->where(['vote' => -1, 'vote_id' => $question->id])->exists();
+    }
+    public function hasVoteForQuestion(Question $question)
+    {
+        return $this->hasQuestionUpVote($question) || $this->hasQuestionDownVote($question);
+    }
+
+    public function hasAnswerUpVote(Answer $answer)
+    {
+        return $this->votesQuestion()->where(['vote' => 1, 'vote_id' => $answer->id])->exists();
+    }
+    public function hasAnswerDownVote(Answer $answer)
+    {
+        return $this->votesQuestion()->where(['vote' => -1, 'vote_id' => $answer->id])->exists();
+    }
+    public function hasVoteForAnswer(Answer $answer)
+    {
+        return $this->hasAnswerUpVote($answer) || $this->hasAnswerDownVote($answer);
+    }
 }
