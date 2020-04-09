@@ -19,9 +19,21 @@
                             <a href="" title="Down Vote" class="d-block text-dark text-center">
                                 <i class="fa fa-caret-down fa-3x "></i>
                             </a>
-                            <a href="" title="Mark as Favourite" class="d-block text-dark text-center">
-                                <i class="fa fa-check fa-2x "></i>
-                            </a>
+                            <div class="mt-2">
+                                @can('markAsBest', $answer)
+                                    <form action="{{ route('answers.bestAnswer', $answer->id) }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="btn {{ $answer->best_answer_status }}">
+                                            <i class="fa fa-check fa-2x "></i>
+                                        </button>
+                                    </form>
+                                    @else
+                                    @if($answer->is_best)
+                                        <i class="fa fa-check fa-2x text-success"></i>
+
+                                    @endif
+                                @endcan
+                            </div>
                         </div>
                         <div class="ml-5 flex-fill">
                             {!! $answer->body !!}

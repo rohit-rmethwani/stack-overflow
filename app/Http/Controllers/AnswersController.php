@@ -104,4 +104,9 @@ class AnswersController extends Controller
     {
         //
     }
+
+    public function bestAnswer(Answer $answer){
+        $answer->question->markAsBest($answer);
+        return redirect()->back();
+    }
 }

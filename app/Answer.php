@@ -23,4 +23,15 @@ class Answer extends BaseModel
             $answer->question->increment('answers_count');
         });
     }
+
+    public function getBestAnswerStatusAttribute(){
+        if($this->id === $this->question->best_answer_id){
+            return 'text-success';
+        }
+        return 'text-dark';
+    }
+
+    public function getIsBestAttribute(){
+        return $this->id === $this->question->best_answer_id;
+    }
 }
