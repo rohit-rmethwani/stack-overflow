@@ -44,6 +44,11 @@ class User extends Authenticatable
         return $this->hasMany(Answer::class);
     }
 
+    public function favorites()
+    {
+        return $this->belongsToMany(Question::class)->withTimestamps();
+    }
+
     public function getAvatarAttribute(){
         return "https://ui-avatars.com/api/?name={$this->name}&rounded=true&size=40&color=ffcc33";
     }

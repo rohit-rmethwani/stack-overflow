@@ -13,6 +13,11 @@ class Question extends BaseModel
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function favorites()
+    {
+        return $this->belongsToMany(User::class)->withTimestamps();
+    }
+
     //Isko MUTATOR bolte hai. Mutator inshort ek event generate karega jab bhi koi variable ka value change hoga.
     //Yaha humara slug title pe dependent hai isiliye humne uske liye ek mutator likha.
     //setAttribute karke magic method hai laravel ke paas jo php ke __set se banaya hai.
@@ -51,5 +56,15 @@ class Question extends BaseModel
     public function markAsBest(Answer $answer){
         $this->best_answer_id = $answer->id;
         $this->save();
+    }
+    public function getFavoritesCountAttribute()
+    {
+        return $this->favorites->count();
+    }
+
+    public function getIsFavoriteAttribute()
+    {
+        //checking current user marked it as fav or not
+        return $this->favorites()->where('user_id',auth()->id())->count() > 0;
     }
 }
