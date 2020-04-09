@@ -67,4 +67,8 @@ class Question extends BaseModel
         //checking current user marked it as fav or not
         return $this->favorites()->where('user_id',auth()->id())->count() > 0;
     }
+
+    public function votes(){
+        return $this->morphToMany(User::class, 'vote')->withTimestamps();
+    }
 }
