@@ -78,11 +78,11 @@ class User extends Authenticatable
 
     public function hasAnswerUpVote(Answer $answer)
     {
-        return $this->votesQuestion()->where(['vote' => 1, 'vote_id' => $answer->id])->exists();
+        return $this->votesAnswer()->where(['vote' => 1, 'vote_id' => $answer->id])->exists();
     }
     public function hasAnswerDownVote(Answer $answer)
     {
-        return $this->votesQuestion()->where(['vote' => -1, 'vote_id' => $answer->id])->exists();
+        return $this->votesAnswer()->where(['vote' => -1, 'vote_id' => $answer->id])->exists();
     }
     public function hasVoteForAnswer(Answer $answer)
     {

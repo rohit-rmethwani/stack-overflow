@@ -26,7 +26,7 @@ class Answer extends BaseModel
         }
     }
 
-    public function updateVote(int $vote){
+    public function updateVote($vote){
         $this->votes()->updateExistingPivot(auth()->id(), ['vote'=>$vote]);
         if($vote < 0){
             $this->decrement('votes_count');
